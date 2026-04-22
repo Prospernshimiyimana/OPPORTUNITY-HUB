@@ -1,0 +1,50 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+}
+
+enum OpportunityStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+model Opportunity {
+  id               Int               @id @default(autoincrement())
+  title            String
+  type             String
+  country          String
+  description      String
+  organization     String
+  deadline         DateTime
+  link             String
+  views            Int               @default(0)
+  status           OpportunityStatus @default(PENDING)
+  submittedByName  String?
+  submittedByEmail String?
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  name      String
+  email     String   @unique
+  role      String   @default("USER")
+  banned    Boolean  @default(false)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Admin {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("ADMIN")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
